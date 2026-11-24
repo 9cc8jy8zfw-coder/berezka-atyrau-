@@ -1,0 +1,895 @@
+DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кафе «Берёзка» (Ақ Қайың) — Шашлыки на углях | Атырау</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        noir: '#0d0608',
+                        burgundy: {
+                            950: '#1f0409',
+                            900: '#2e070e',
+                            800: '#4a0c18',
+                            700: '#6b1223',
+                            600: '#8f1930',
+                        },
+                        amberGlow: '#f59e0b',
+                        goldAccent: '#d4af37',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d0608;
+            color: #f5f0f2;
+            overflow-x: hidden;
+        }
+
+        /* Атмосфера Alan Wake 2: Тёмный туманный лес + тёплое неоновое свечение */
+        .aw2-fog {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(143, 25, 48, 0.28) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.12) 0%, transparent 45%),
+                linear-gradient(180deg, rgba(13, 6, 8, 0.72) 0%, rgba(31, 4, 9, 0.92) 60%, #0d0608 100%);
+        }
+
+        .neon-border {
+            box-shadow: 0 0 18px rgba(143, 25, 48, 0.45), inset 0 0 12px rgba(212, 175, 55, 0.1);
+        }
+
+        .neon-text-red {
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.7), 0 0 24px rgba(143, 25, 48, 0.8);
+        }
+
+        .neon-text-gold {
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.55);
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #14070a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6b1223;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8f1930;
+        }
+
+        /* Плавная анимация тумана */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.75; }
+            50% { opacity: 1; }
+        }
+        .animate-lantern {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-burgundy-700 selection:text-white">
+
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-noir/85 backdrop-blur-md border-b border-burgundy-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Логотип -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-burgundy-700 to-burgundy-950 border border-goldAccent/40 flex items-center justify-center shadow-lg group-hover:border-goldAccent transition">
+                    <span class="text-goldAccent font-display font-bold text-lg">АҚ</span>
+                </div>
+                <div>
+                    <div class="font-display font-bold text-base sm:text-xl tracking-wide text-white leading-none">
+                        БЕРЁЗКА <span class="text-goldAccent text-xs sm:text-sm font-sans font-normal block sm:inline">«АҚ ҚАЙЫҢ»</span>
+                    </div>
+                    <p class="text-[11px] text-rose-200/60 tracking-widest uppercase mt-0.5">Атырау • Мангал & Живая музыка</p>
+                </div>
+            </a>
+
+            <!-- Навигация (десктоп) -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-rose-100/80">
+                <a href="#menu" class="hover:text-goldAccent transition">Меню</a>
+                <a href="#atmosphere" class="hover:text-goldAccent transition">Атмосфера</a>
+                <a href="#delivery" class="hover:text-goldAccent transition">Доставка</a>
+                <a href="#contacts" class="hover:text-goldAccent transition">Контакты</a>
+            </nav>
+
+            <!-- Кнопка корзины / WhatsApp -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="toggleCart()" class="relative flex items-center gap-2 bg-burgundy-800/90 hover:bg-burgundy-700 text-white px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-goldAccent/30 transition shadow-lg">
+                    <svg class="w-5 h-5 text-goldAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="text-xs sm:text-sm font-semibold hidden sm:inline">Заказ</span>
+                    <span id="cart-badge" class="bg-goldAccent text-noir font-bold text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO СЕКЦИЯ В СТИЛЕ ALAN WAKE 2 + БОРДОВЫЙ НУАР -->
+    <section class="relative min-h-[92vh] flex items-center pt-20 overflow-hidden">
+        <!-- Фоновое изображение: тёмный мистический хвойный/берёзовый лес с тёплым светом фонаря -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=80" 
+                onerror="this.src='https://placehold.co/1920x1080/1f0409/d4af37?text=Кафе+Берёзка+Атырау'"
+                alt="Тёмный лес и огни кафе" 
+                class="w-full h-full object-cover object-center scale-105 filter brightness-[0.42] contrast-125"
+            >
+            <div class="absolute inset-0 aw2-fog"></div>
+            <!-- Эффект тёплого неонового фонаря из темноты -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[520px] h-[520px] bg-burgundy-700/25 rounded-full blur-[120px] pointer-events-none animate-lantern"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 w-full">
+            <div class="max-w-3xl">
+                <!-- Неоновая вывеска-бейдж -->
+                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-burgundy-950/90 border border-rose-500/40 shadow-lg mb-6">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                    <span class="text-xs sm:text-sm font-medium tracking-wider uppercase text-rose-200">
+                        Азербайджанские шашлыки на углях • Атырау
+                    </span>
+                </div>
+
+                <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-4">
+                    Кафе <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 via-goldAccent to-amber-200 neon-text-gold">«Берёзка»</span>
+                    <span class="block text-2xl sm:text-4xl text-rose-200/90 mt-2 font-sans font-semibold">Ақ Қайың</span>
+                </h1>
+
+                <p class="text-base sm:text-xl text-rose-100/80 leading-relaxed max-w-2xl mb-8">
+                    Сочное мясо с дымком настоящего мангала, таинственная вечерняя атмосфера с живой музыкой и горячая доставка по всему Атырау.
+                </p>
+
+                <!-- Ключевые преимущества -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-9">
+                    <div class="bg-burgundy-950/80 backdrop-blur-md border border-burgundy-700/60 p-3.5 rounded-2xl flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-burgundy-800/80 flex items-center justify-center text-goldAccent shrink-0">
+                            🔥
+                        </div>
+                        <div>
+                            <div class="text-xs text-rose-200/60">Акция доставки</div>
+                            <div class="text-sm font-semibold text-white">От 5 порций — бесплатно</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-burgundy-950/80 backdrop-blur-md border border-burgundy-700/60 p-3.5 rounded-2xl flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-burgundy-800/80 flex items-center justify-center text-goldAccent shrink-0">
+                            🎷
+                        </div>
+                        <div>
+                            <div class="text-xs text-rose-200/60">Вечерняя программа</div>
+                            <div class="text-sm font-semibold text-white">Живая музыка в зале</div>
+                        </div>
+                    </div>
+
+                    <a href="https://instagram.com/atyrau.shashlyki" target="_blank" rel="noopener" class="bg-burgundy-950/80 hover:bg-burgundy-900/90 backdrop-blur-md border border-burgundy-700/60 p-3.5 rounded-2xl flex items-center gap-3 transition">
+                        <div class="w-10 h-10 rounded-xl bg-burgundy-800/80 flex items-center justify-center text-goldAccent shrink-0">
+                            📸
+                        </div>
+                        <div>
+                            <div class="text-xs text-rose-200/60">@atyrau.shashlyki</div>
+                            <div class="text-sm font-semibold text-goldAccent">25.5 тыс. подписчиков</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#menu" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-burgundy-700 to-burgundy-600 hover:from-burgundy-600 hover:to-rose-700 text-white font-semibold px-7 py-4 rounded-2xl shadow-xl shadow-burgundy-950 border border-rose-400/30 transition text-center">
+                        <span>Открыть меню и собрать заказ</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+
+                    <a href="https://wa.me/77756027012?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%20%D0%B8%D0%BB%D0%B8%20%D0%BE%D1%84%D0%BE%D1%80%D0%BC%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D1%83%20%D0%B2%20%D0%BA%D0%B0%D1%84%D0%B5%20%C2%AB%D0%91%D0%B5%D1%80%D1%91%D0%B7%D0%BA%D0%B0%C2%BB." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2.5 bg-noir/80 hover:bg-burgundy-950 text-goldAccent font-semibold px-7 py-4 rounded-2xl border border-goldAccent/40 hover:border-goldAccent transition text-center">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                        <span>Написать в WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- БАННЕР БЕСПЛАТНОЙ ДОСТАВКИ -->
+    <section id="delivery" class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-12">
+        <div class="bg-gradient-to-r from-burgundy-900 via-burgundy-800 to-burgundy-900 rounded-3xl p-6 sm:p-8 border border-goldAccent/30 neon-border flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-start sm:items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-noir/70 border border-goldAccent/40 flex items-center justify-center text-2xl shrink-0">
+                    🚚
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-2xl font-bold text-white">Бесплатная доставка от 5 порций шашлыка!</h2>
+                    <p class="text-sm text-rose-200/80 mt-1">
+                        Добавляйте блюда в корзину ниже — счётчик автоматически посчитает количество порций шашлыка и сформирует готовый заказ для отправки в WhatsApp.
+                    </p>
+                </div>
+            </div>
+            <div class="w-full md:w-auto shrink-0">
+                <div class="bg-noir/70 px-5 py-3 rounded-2xl border border-burgundy-600/50 text-center">
+                    <span class="text-xs uppercase tracking-wider text-rose-300 block">Телефон и WhatsApp</span>
+                    <a href="tel:+77756027012" class="text-lg sm:text-xl font-bold text-goldAccent hover:underline">+7 775 602 70 12</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ОСНОВНОЙ РАЗДЕЛ МЕНЮ -->
+    <section id="menu" class="py-12 sm:py-16 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-goldAccent text-xs font-semibold uppercase tracking-[0.25em]">Вкус настоящего огня</span>
+                <h2 class="font-display text-3xl sm:text-5xl font-bold text-white mt-2">Меню кафе «Берёзка»</h2>
+                <p class="text-rose-200/70 text-sm sm:text-base mt-3">
+                    Выберите категорию или воспользуйтесь поиском по блюдам. Нажмите «+ В заказ», чтобы отправить список на кухню.
+                </p>
+            </div>
+
+            <!-- Поиск по меню -->
+            <div class="max-w-xl mx-auto mb-8">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="menu-search" 
+                        placeholder="Поиск блюда (например: антрекот, люля, цезарь, чай)..." 
+                        class="w-full bg-burgundy-950/90 border border-burgundy-700/70 focus:border-goldAccent rounded-2xl py-3.5 pl-12 pr-4 text-white placeholder-rose-300/40 focus:outline-none transition"
+                    >
+                    <svg class="w-5 h-5 text-rose-300/50 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Вкладки категорий -->
+            <div id="category-tabs" class="flex items-center gap-2.5 overflow-x-auto pb-4 mb-8 no-scrollbar">
+                <!-- Генерируется через JS -->
+            </div>
+
+            <!-- Сетка блюд -->
+            <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Генерируется через JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- АТМОСФЕРА В ДУХЕ ALAN WAKE 2 (ТЁМНЫЙ ЛЕС, ОГНИ ЗАКУСОЧНОЙ И ЖИВАЯ МУЗЫКА) -->
+    <section id="atmosphere" class="py-16 sm:py-24 bg-gradient-to-b from-noir via-burgundy-950/70 to-noir border-y border-burgundy-900/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="text-rose-400 text-xs font-semibold uppercase tracking-[0.25em]">Вечерняя эстетика • Noir & Fire</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-2">Атмосфера «Берёзки»</h2>
+                </div>
+                <p class="text-rose-200/70 text-sm max-w-md">
+                    Когда на Атырау опускаются сумерки, в «Берёзке» зажигаются тёплые огни, разгораются угли и звучит живая музыка.
+                </p>
+            </div>
+
+            <!-- Карточки атмосферы -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Карточка 1: Ночной лес / Уютный свет -->
+                <div class="group relative rounded-3xl overflow-hidden border border-burgundy-700/50 bg-burgundy-950 h-96">
+                    <img 
+                        src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=80" 
+                        onerror="this.src='https://placehold.co/800x600/2e070e/d4af37?text=Тайна+ночного+леса'"
+                        alt="Ночной туманный лес" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-700 filter brightness-50 contrast-125"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-noir via-burgundy-950/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-noir/80 backdrop-blur-md border border-rose-500/40 px-3 py-1 rounded-full text-xs text-rose-300">
+                        Bright Falls / Atyrau Vibe
+                    </div>
+                    <div class="absolute bottom-0 p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Тёплый свет среди ночи</h3>
+                        <p class="text-sm text-rose-100/75 leading-relaxed">
+                            Уютный полумрак зала, благородные бордовые оттенки и атмосфера, в которой хочется остаться до позднего вечера.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Карточка 2: Огонь мангала -->
+                <div class="group relative rounded-3xl overflow-hidden border border-goldAccent/40 bg-burgundy-950 h-96">
+                    <img 
+                        src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80" 
+                        onerror="this.src='https://placehold.co/800x600/4a0c18/f59e0b?text=Азербайджанский+шашлык'"
+                        alt="Шашлык на углях" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-700 filter brightness-75 contrast-110"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-noir via-burgundy-950/40 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-burgundy-800/90 border border-goldAccent/40 px-3 py-1 rounded-full text-xs text-goldAccent font-medium">
+                        Фирменный мангал
+                    </div>
+                    <div class="absolute bottom-0 p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Азербайджанские шашлыки</h3>
+                        <p class="text-sm text-rose-100/75 leading-relaxed">
+                            Отборная баранина, телятина, хан-кебаб и сочный люля-кебаб, приготовленные на живых углях по традиционным рецептам.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Карточка 3: Живая музыка и неоновый вечер -->
+                <div class="group relative rounded-3xl overflow-hidden border border-burgundy-700/50 bg-burgundy-950 h-96">
+                    <img 
+                        src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80" 
+                        onerror="this.src='https://placehold.co/800x600/1f0409/d4af37?text=Живая+музыка'"
+                        alt="Живая музыка вечером" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-700 filter brightness-50 contrast-125"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-noir via-burgundy-950/50 to-transparent"></div>
+                    <div class="absolute top-4 left-4 bg-noir/80 backdrop-blur-md border border-goldAccent/40 px-3 py-1 rounded-full text-xs text-goldAccent">
+                        Каждый вечер
+                    </div>
+                    <div class="absolute bottom-0 p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Живая музыка</h3>
+                        <p class="text-sm text-rose-100/75 leading-relaxed">
+                            Душевные песни и живое исполнение создают неповторимое настроение для встреч с друзьями и семейных праздников.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ И КАРТА 2GIS -->
+    <section id="contacts" class="py-16 sm:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-burgundy-950/90 border border-burgundy-800 rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <span class="text-goldAccent text-xs font-semibold uppercase tracking-[0.25em]">Ждём вас в гости</span>
+                        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-2 mb-6">Контакты кафе «Берёзка»</h2>
+
+                        <div class="space-y-5">
+                            <div class="flex items-start gap-4">
+                                <div class="w-11 h-11 rounded-2xl bg-burgundy-800/80 border border-burgundy-600/50 flex items-center justify-center text-goldAccent shrink-0">
+                                    📍
+                                </div>
+                                <div>
+                                    <div class="text-xs text-rose-300/60 uppercase tracking-wider">Адрес в Атырау</div>
+                                    <div class="text-base sm:text-lg font-semibold text-white mt-0.5">проспект Мухтара Ауэзова, 61а</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-11 h-11 rounded-2xl bg-burgundy-800/80 border border-burgundy-600/50 flex items-center justify-center text-goldAccent shrink-0">
+                                    📞
+                                </div>
+                                <div>
+                                    <div class="text-xs text-rose-300/60 uppercase tracking-wider">Телефон и WhatsApp</div>
+                                    <a href="tel:+77756027012" class="text-base sm:text-lg font-semibold text-goldAccent hover:underline mt-0.5 block">
+                                        +7 775 602 70 12
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-11 h-11 rounded-2xl bg-burgundy-800/80 border border-burgundy-600/50 flex items-center justify-center text-goldAccent shrink-0">
+                                    📱
+                                </div>
+                                <div>
+                                    <div class="text-xs text-rose-300/60 uppercase tracking-wider">Мы в Instagram</div>
+                                    <a href="https://instagram.com/atyrau.shashlyki" target="_blank" rel="noopener" class="text-base sm:text-lg font-semibold text-white hover:text-goldAccent transition mt-0.5 block">
+                                        @atyrau.shashlyki <span class="text-xs bg-burgundy-800 text-goldAccent px-2.5 py-0.5 rounded-full ml-1">25.5K подписчиков</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 mt-8">
+                            <a href="https://2gis.kz/atyrau/firm/70000001035111137" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3.5 rounded-2xl transition shadow-lg">
+                                <span>Открыть в 2ГИС</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+
+                            <a href="https://wa.me/77756027012" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-burgundy-700 hover:bg-burgundy-600 text-white font-semibold px-6 py-3.5 rounded-2xl border border-rose-400/30 transition">
+                                <span>Написать в WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Стилизованная карточка-навигатор -->
+                    <div class="relative rounded-3xl overflow-hidden border border-burgundy-700/60 bg-noir p-8 flex flex-col justify-between min-h-[300px]">
+                        <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                        <div class="relative z-10">
+                            <div class="inline-block px-3 py-1 rounded-full bg-burgundy-900 border border-goldAccent/30 text-xs text-goldAccent mb-4">
+                                Маршрут до кафе
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">г. Атырау, пр. Мухтара Ауэзова, 61а</h3>
+                            <p class="text-rose-200/70 text-sm mt-2">
+                                Постройте удобный маршрут на авто или вызовите такси прямо до дверей кафе «Берёзка (Ақ Қайың)» через приложение 2ГИС.
+                            </p>
+                        </div>
+
+                        <div class="relative z-10 mt-8 pt-6 border-t border-burgundy-800/80 flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-rose-300/60">Доставка по городу</div>
+                                <div class="text-sm font-semibold text-white">Бесплатно от 5 порций</div>
+                            </div>
+                            <a href="https://2gis.kz/atyrau/firm/70000001035111137" target="_blank" rel="noopener" class="text-goldAccent font-semibold text-sm hover:underline">
+                                Посмотреть на карте →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ -->
+    <footer class="border-t border-burgundy-900/70 py-8 text-center text-xs sm:text-sm text-rose-200/50">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© Кафе «Берёзка» (Ақ Қайың) — г. Атырау, проспект Мухтара Ауэзова, 61а.</p>
+            <p class="mt-1">Азербайджанские шашлыки • Живая музыка • Доставка: +7 775 602 70 12</p>
+        </div>
+    </footer>
+
+    <!-- ПЛАВАЮЩАЯ КНОПКА КОРЗИНЫ СНИЗУ (МОБИЛЬНАЯ) -->
+    <div id="floating-cart-bar" class="fixed bottom-4 left-4 right-4 z-30 md:hidden hidden">
+        <button onclick="toggleCart()" class="w-full bg-gradient-to-r from-burgundy-700 to-burgundy-600 text-white font-semibold py-3.5 px-5 rounded-2xl shadow-2xl border border-goldAccent/40 flex items-center justify-between">
+            <span class="flex items-center gap-2">
+                <span>🛒 Ваш заказ</span>
+                <span id="mobile-cart-count" class="bg-goldAccent text-noir text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            </span>
+            <span id="mobile-cart-total" class="text-goldAccent font-bold">0 ₸</span>
+        </button>
+    </div>
+
+    <!-- ВЫДВИЖНАЯ КОРЗИНА / ОФОРМЛЕНИЕ ЗАКАЗА В WHATSAPP -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-burgundy-950 border-l border-burgundy-700/70 shadow-2xl flex flex-col">
+            <!-- Шапка корзины -->
+            <div class="p-5 border-b border-burgundy-800 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white">Ваш заказ</h3>
+                    <p class="text-xs text-rose-200/60">Отправка напрямую в WhatsApp кафе</p>
+                </div>
+                <button onclick="toggleCart()" class="w-9 h-9 rounded-xl bg-burgundy-900 hover:bg-burgundy-800 text-rose-200 flex items-center justify-center">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Прогресс-бар бесплатной доставки -->
+            <div class="p-4 bg-noir/70 border-b border-burgundy-800/80">
+                <div class="flex justify-between text-xs mb-1.5">
+                    <span id="delivery-status-text" class="text-rose-200 font-medium">Добавьте 5 порций шашлыка для бесплатной доставки</span>
+                    <span id="shashlik-counter" class="text-goldAccent font-bold">0 / 5 порций</span>
+                </div>
+                <div class="w-full h-2 bg-burgundy-900 rounded-full overflow-hidden">
+                    <div id="delivery-progress" class="h-full bg-gradient-to-r from-rose-500 to-goldAccent transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Список добавленных блюд -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-3">
+                <div class="text-center text-rose-200/50 py-12 text-sm">
+                    Корзина пока пуста. Выберите шашлыки или салаты из меню!
+                </div>
+            </div>
+
+            <!-- Итог и кнопка WhatsApp -->
+            <div class="p-5 border-t border-burgundy-800 bg-noir/90 space-y-4">
+                <div>
+                    <label class="block text-xs text-rose-200/70 mb-1">Адрес доставки (или напишите «Самовывоз / Бронь»)</label>
+                    <input type="text" id="order-address" placeholder="Например: мкр. Авангард, дом 12, кв 45" class="w-full bg-burgundy-950 border border-burgundy-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-rose-300/30 focus:outline-none focus:border-goldAccent">
+                </div>
+
+                <div class="flex items-center justify-between text-base font-bold">
+                    <span class="text-rose-100">Итого к оплате:</span>
+                    <span id="cart-total" class="text-xl text-goldAccent">0 ₸</span>
+                </div>
+
+                <button onclick="sendOrderToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                    <span>Отправить заказ в WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ (ВМЕСТО ALERT) -->
+    <div id="toast" class="fixed bottom-20 md:bottom-6 right-6 z-50 bg-burgundy-800 border border-goldAccent/50 text-white px-4 py-3 rounded-2xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none text-sm font-medium">
+        Добавлено в заказ
+    </div>
+
+    <script>
+        // ПОЛНАЯ БАЗА МЕНЮ КАФЕ «БЕРЁЗКА» (БЕЗ АЗЕРБАЙДЖАНСКОЙ КУХНИ, ЕВРОПЕЙСКОЙ КУХНИ, ВИСКИ И КОНЬЯКА)
+        const menuData = [
+            // 1. ШАШЛЫК ПО-КАВКАЗСКИ
+            { id: 1, category: 'Шашлык по-кавказски', name: 'Антрекот', desc: 'Рёбра, спинка, мякоть', price: 3800, isShashlik: true },
+            { id: 2, category: 'Шашлык по-кавказски', name: 'Баранина мякоть', desc: 'Сочная баранина на углях', price: 1800, isShashlik: true },
+            { id: 3, category: 'Шашлык по-кавказски', name: 'Окорочка мякоть', desc: 'Нежное куриное филе с дымком', price: 1800, isShashlik: true },
+            { id: 4, category: 'Шашлык по-кавказски', name: 'Окорочка (с костями)', desc: 'Классический куриный шашлык', price: 1400, isShashlik: true },
+            { id: 5, category: 'Шашлык по-кавказски', name: 'Утиное филе', desc: 'Ароматная утка на мангале', price: 2000, isShashlik: true },
+            { id: 6, category: 'Шашлык по-кавказски', name: 'Печень с курдюком', desc: 'Нежная печень с ароматным курдюком', price: 2500, isShashlik: true },
+            { id: 7, category: 'Шашлык по-кавказски', name: 'Хан кебаб', desc: 'Печень, почка, сердце, мясо, зелень', price: 2500, isShashlik: true },
+            { id: 8, category: 'Шашлык по-кавказски', name: 'Крылья', desc: 'Румяные куриные крылышки на углях', price: 1600, isShashlik: true },
+            { id: 9, category: 'Шашлык по-кавказски', name: 'Овощной шашлык', desc: 'Помидор, болг. перец, картошка, баклажан', price: 1200, isShashlik: true },
+            { id: 10, category: 'Шашлык по-кавказски', name: 'Люля кебаб с сыром', desc: 'Рубленое мясо с тягучим сыром', price: 1600, isShashlik: true },
+            { id: 11, category: 'Шашлык по-кавказски', name: 'Люля кебаб (куриный)', desc: 'Нежный куриный люля на шампуре', price: 1300, isShashlik: true },
+            { id: 12, category: 'Шашлык по-кавказски', name: 'Люля кебаб', desc: 'Классический люля кебаб на углях', price: 1300, isShashlik: true },
+            { id: 13, category: 'Шашлык по-кавказски', name: 'Лесинка', desc: 'Фирменный шашлык на мангале', price: 1300, isShashlik: true },
+            { id: 14, category: 'Шашлык по-кавказски', name: 'Картошка с курдюком на мангале', desc: 'Запечённый картофель с курдюком', price: 1500, isShashlik: true },
+            { id: 15, category: 'Шашлык по-кавказски', name: 'Телятина', desc: 'Чистая вырезка и курдюк', price: 2000, isShashlik: true },
+            { id: 16, category: 'Шашлык по-кавказски', name: 'Картошка по-деревенски', desc: 'Золотистый картофель с дымком', price: 1200, isShashlik: false },
+            { id: 17, category: 'Шашлык по-кавказски', name: 'Ассорти (на 4 человек)', desc: 'Баранина, курица, люля, печень, овощи', price: 10500, isShashlik: true, portions: 5 },
+            { id: 18, category: 'Шашлык по-кавказски', name: 'Ассорти (на 8 человек)', desc: 'Баранина, курица, люля гов. и кур., утка, телятина, хан кебаб, овощной, лесинка', price: 18000, isShashlik: true, portions: 9 },
+            { id: 19, category: 'Шашлык по-кавказски', name: 'Ассорти (на 12 человек)', desc: 'Баранина, кав. баран, утка, люля с сыром, хан кебаб, крылья, люля куриный, печень, окорочка, овощной, лесинка', price: 23800, isShashlik: true, portions: 12 },
+            { id: 20, category: 'Шашлык по-кавказски', name: 'Свинина (мякоть)', desc: 'Сочная свиная шея на углях', price: 3500, isShashlik: true },
+            { id: 21, category: 'Шашлык по-кавказски', name: 'Свинина (кабан)', desc: 'Особый маринад на мангале', price: 3500, isShashlik: true },
+            { id: 22, category: 'Шашлык по-кавказски', name: 'Свинина ребрышки', desc: 'Поджаристые рёбрышки с дымком', price: 3500, isShashlik: true },
+            { id: 23, category: 'Шашлык по-кавказски', name: 'Печень, сердце с курдюком', desc: 'Сытный шашлык на углях', price: 1500, isShashlik: true },
+            { id: 24, category: 'Шашлык по-кавказски', name: 'Куры гриль (соус, лаваш)', desc: 'Целая курица гриль с фирменным соусом и лавашом', price: 4500, isShashlik: true },
+
+            // 2. ШАШЛЫКИ РЫБНЫЕ
+            { id: 25, category: 'Шашлыки рыбные', name: 'Сазан в мангале', desc: 'Свежий каспийский/уральский сазан на углях', price: 2500, isShashlik: true },
+            { id: 26, category: 'Шашлыки рыбные', name: 'Сазан жареный с картошкой', desc: 'Хрустящий жареный сазан с гарниром', price: 3000, isShashlik: false },
+
+            // 3. САЛАТЫ
+            { id: 27, category: 'Салаты', name: 'Салат Берёзка', desc: 'Сыр чечел, корнишон, яйцо, сыр, помидор, листья салата, майонез', price: 3000 },
+            { id: 28, category: 'Салаты', name: 'Восток', desc: 'Кубики сыра, помидор, копчёная колбаса, кукуруза, сухарики, майонез', price: 2000 },
+            { id: 29, category: 'Салаты', name: 'Пекинский (тёплый)', desc: 'Тёплый фирменный салат', price: 3200 },
+            { id: 30, category: 'Салаты', name: 'Гнездо глухаря', desc: 'Классический сытный салат', price: 2500 },
+            { id: 31, category: 'Салаты', name: 'Свежий салат', desc: 'Свежие овощи и зелень', price: 2500 },
+            { id: 32, category: 'Салаты', name: 'Русская закуска', desc: 'Традиционная закуска к столу', price: 2000 },
+            { id: 33, category: 'Салаты', name: 'Цезарь', desc: 'Куриное филе, листья салата, сухарики, соус Цезарь', price: 3500 },
+            { id: 34, category: 'Салаты', name: 'Грибной с мясом', desc: 'Сытный салат с мясом и грибами', price: 3000 },
+            { id: 35, category: 'Салаты', name: 'Грибной', desc: 'Лёгкий грибной салат', price: 2000 },
+            { id: 36, category: 'Салаты', name: 'Кавказская нарезка', desc: 'Свежие овощи, брынза и ароматная зелень', price: 3000 },
+            { id: 37, category: 'Салаты', name: 'Селёдка под шубой', desc: 'Любимая классика', price: 2300 },
+            { id: 38, category: 'Салаты', name: 'Салат с початками', desc: 'Болг. перец, корнишон, початки, помидор, грибы, мясо, горох', price: 3000 },
+            { id: 39, category: 'Салаты', name: 'Салат с курицей и черносливом', desc: 'Курица, яйцо, огурцы, чернослив, орех, майонез', price: 2800 },
+            { id: 40, category: 'Салаты', name: 'Мандарин', desc: 'Копчёная курица, сыр, свежие огурцы, яйцо, горох', price: 2500 },
+            { id: 41, category: 'Салаты', name: 'Мясной салат в соевом соусе', desc: 'Мясо, грибы, свежие огурцы, горох, зелень, соевый соус', price: 2800 },
+            { id: 42, category: 'Салаты', name: 'Салат солёный Азербайджан', desc: 'Ассорти домашних солений', price: 2500 },
+
+            // 4. ХЛЕБНАЯ КОРЗИНА И СОУСЫ
+            { id: 43, category: 'Хлеб и соусы', name: 'Хлеб (6 шт)', desc: 'Свежая нарезка', price: 100 },
+            { id: 44, category: 'Хлеб и соусы', name: 'Лаваш (1 шт)', desc: 'Тонкий лаваш к шашлыку', price: 200 },
+            { id: 45, category: 'Хлеб и соусы', name: 'Лепёшка (1 шт)', desc: 'Тёплая тандырная лепёшка', price: 300 },
+            { id: 46, category: 'Хлеб и соусы', name: 'Соус белый', desc: 'Фирменный чесночно-сметанный соус', price: 300 },
+            { id: 47, category: 'Хлеб и соусы', name: 'Соус красный', desc: 'Фирменный томатный шашлычный соус с зеленью', price: 300 },
+
+            // 5. ДЕСЕРТЫ И СЛАДОСТИ К ЧАЮ
+            { id: 48, category: 'Десерты и сладости', name: 'Фруктовое ассорти', desc: 'Сезонные свежие фрукты', price: 3500 },
+            { id: 49, category: 'Десерты и сладости', name: 'Шоколад в ассортименте', desc: 'Плитка шоколада к чаю', price: 1300 },
+            { id: 50, category: 'Десерты и сладости', name: 'Сникерс', desc: 'Шоколадный батончик', price: 800 },
+            { id: 51, category: 'Десерты и сладости', name: 'Рулет', desc: 'Сладкий рулет к чаю', price: 1000 },
+            { id: 52, category: 'Десерты и сладости', name: 'Кекс', desc: 'Домашний кекс к чаю', price: 1500 },
+
+            // 6. ГОРЯЧИЕ НАПИТКИ
+            { id: 53, category: 'Горячие напитки', name: 'Азербайджанский чай', desc: 'Ароматный заварной чай в чайнике', price: 1800 },
+            { id: 54, category: 'Горячие напитки', name: 'Марокканский чай (маленький)', desc: 'Пряный чай с мятой и цитрусами', price: 1300 },
+            { id: 55, category: 'Горячие напитки', name: 'Ташкентский чай (маленький)', desc: 'Чай с лимоном, мятой и мёдом', price: 1200 },
+            { id: 56, category: 'Горячие напитки', name: 'Чайник зелёного чая', desc: 'Классический зелёный чай', price: 1200 },
+            { id: 57, category: 'Горячие напитки', name: 'Чайник чёрного чая', desc: 'Крепкий чёрный чай', price: 1000 },
+            { id: 58, category: 'Горячие напитки', name: 'Кофе с молоком', desc: 'Кружка горячего кофе', price: 350 },
+            { id: 59, category: 'Горячие напитки', name: 'Кофе чёрный', desc: 'Кружка чёрного кофе', price: 300 },
+            { id: 60, category: 'Горячие напитки', name: 'Чай с лимоном', desc: 'Кружка чая с долькой лимона', price: 300 },
+            { id: 61, category: 'Горячие напитки', name: 'Чай с молоком', desc: 'Кружка чая по-казахски', price: 300 },
+            { id: 62, category: 'Горячие напитки', name: 'Зелёный чай (кружка)', desc: 'Порционный зелёный чай', price: 250 },
+
+            // 7. ХОЛОДНЫЕ НАПИТКИ
+            { id: 63, category: 'Холодные напитки', name: 'Кола (1 л)', desc: 'Охлаждённая Coca-Cola', price: 1000 },
+            { id: 64, category: 'Холодные напитки', name: 'Фанта (1 л)', desc: 'Охлаждённая Fanta', price: 1000 },
+            { id: 65, category: 'Холодные напитки', name: 'Натуральные соки в ассортименте', desc: '1 литр в ассортименте', price: 1500 },
+            { id: 66, category: 'Холодные напитки', name: 'Вода без газа', desc: 'Питьевая вода', price: 800 },
+            { id: 67, category: 'Холодные напитки', name: 'Вода с газом', desc: 'Газированная вода', price: 800 },
+            { id: 68, category: 'Холодные напитки', name: 'Кола стеклянная', desc: 'Классическая бутылка 0,25 л', price: 700 },
+            { id: 69, category: 'Холодные напитки', name: 'Кола баночная', desc: 'Жестяная банка 0,33 л', price: 700 },
+            { id: 70, category: 'Холодные напитки', name: 'Ред Булл большой', desc: 'Энергетический напиток', price: 1500 },
+            { id: 71, category: 'Холодные напитки', name: 'Ред Булл маленький', desc: 'Энергетический напиток 0,25 л', price: 1200 },
+
+            // 8. БАР И ЗАКУСКИ К ПИВУ (БЕЗ ВИСКИ И КОНЬЯКА)
+            { id: 72, category: 'Бар и к пиву', name: 'Прага (разливное 0,5 л)', desc: 'Свежее разливное пиво', price: 800 },
+            { id: 73, category: 'Бар и к пиву', name: 'Жигулёвское (разливное 0,5 л)', desc: 'Свежее разливное пиво', price: 800 },
+            { id: 74, category: 'Бар и к пиву', name: 'Бремен (разливное 0,5 л)', desc: 'Свежее разливное пиво', price: 800 },
+            { id: 75, category: 'Бар и к пиву', name: 'Миллер (0,3 л)', desc: 'Бутылочное пиво', price: 1000 },
+            { id: 76, category: 'Бар и к пиву', name: 'Миллер (0,5 л)', desc: 'Бутылочное пиво', price: 1500 },
+            { id: 77, category: 'Бар и к пиву', name: 'Эфес (бутылочное)', desc: 'Охлаждённое бутылочное', price: 1100 },
+            { id: 78, category: 'Бар и к пиву', name: 'Холстен (бутылочное)', desc: 'Охлаждённое бутылочное', price: 1200 },
+            { id: 79, category: 'Бар и к пиву', name: 'Кружка свежего (бутылочное)', desc: 'Охлаждённое бутылочное', price: 1000 },
+            { id: 80, category: 'Бар и к пиву', name: 'Балтика «0»', desc: 'Безалкогольное пиво', price: 800 },
+            { id: 81, category: 'Бар и к пиву', name: 'Балтика «7»', desc: 'Бутылочное пиво', price: 800 },
+            { id: 82, category: 'Бар и к пиву', name: 'Сыр чечел', desc: 'Копчёный сыр к пиву', price: 800 },
+            { id: 83, category: 'Бар и к пиву', name: 'Фисташки', desc: 'Солёные жареные фисташки', price: 1200 },
+            { id: 84, category: 'Бар и к пиву', name: 'Арахис солёный', desc: 'Хрустящий арахис', price: 800 },
+            { id: 85, category: 'Бар и к пиву', name: 'Чипсы ассортимент (большой)', desc: 'Большая пачка чипсов', price: 1500 },
+            { id: 86, category: 'Бар и к пиву', name: 'Чипсы ассортимент (маленький)', desc: 'Маленькая пачка чипсов', price: 1000 },
+            { id: 87, category: 'Бар и к пиву', name: 'Сухарики большие', desc: 'Большая пачка сухариков', price: 800 },
+            { id: 88, category: 'Бар и к пиву', name: 'Сухарики маленькие', desc: 'Маленькая пачка сухариков', price: 500 },
+            { id: 89, category: 'Бар и к пиву', name: 'Чечня (закуска к пиву)', desc: 'Фирменная острая закуска к пиву', price: 1200 },
+            { id: 90, category: 'Бар и к пиву', name: 'Немирофф Деликат (0,5 л)', desc: '100 гр — 1300 ₸', price: 6500 },
+            { id: 91, category: 'Бар и к пиву', name: 'Немирофф Премиум (0,5 л)', desc: '100 гр — 1700 ₸', price: 8500 },
+            { id: 92, category: 'Бар и к пиву', name: 'Синяя гора (0,5 л)', desc: '100 гр — 700 ₸', price: 3500 },
+            { id: 93, category: 'Бар и к пиву', name: 'Органик (0,5 л)', desc: '100 гр — 1000 ₸', price: 5000 },
+            { id: 94, category: 'Бар и к пиву', name: 'Абсолют (0,5 л)', desc: '100 гр — 2000 ₸', price: 10000 },
+            { id: 95, category: 'Бар и к пиву', name: 'Зерно (0,5 л)', desc: '100 гр — 900 ₸', price: 4500 },
+            { id: 96, category: 'Бар и к пиву', name: 'Айдабульская (0,5 л)', desc: '100 гр — 1000 ₸', price: 5000 },
+            { id: 97, category: 'Бар и к пиву', name: 'Зебра (0,5 л)', desc: '100 гр — 700 ₸', price: 3500 },
+            { id: 98, category: 'Бар и к пиву', name: 'Вольф (0,5 л)', desc: '100 гр — 600 ₸', price: 3000 },
+            { id: 99, category: 'Бар и к пиву', name: 'Зелёная марка (0,5 л)', desc: '100 гр — 1000 ₸', price: 5000 },
+            { id: 100, category: 'Бар и к пиву', name: 'Хортица (0,5 л)', desc: '100 гр — 1000 ₸', price: 5000 },
+            { id: 101, category: 'Бар и к пиву', name: 'Серебром (0,5 л)', desc: '100 гр — 1000 ₸', price: 5000 },
+            { id: 102, category: 'Бар и к пиву', name: 'Финляндия (0,5 л)', desc: '100 гр — 2100 ₸', price: 10500 },
+            { id: 103, category: 'Бар и к пиву', name: 'Русский стандарт (0,5 л)', desc: '100 гр — 1600 ₸', price: 8000 },
+            { id: 104, category: 'Бар и к пиву', name: 'Абсолют (0,7 л)', desc: '100 гр — 2900 ₸', price: 14500 }
+        ];
+
+        const categories = [
+            'Шашлык по-кавказски',
+            'Шашлыки рыбные',
+            'Салаты',
+            'Хлеб и соусы',
+            'Горячие напитки',
+            'Холодные напитки',
+            'Десерты и сладости',
+            'Бар и к пиву'
+        ];
+
+        let activeCategory = 'Шашлык по-кавказски';
+        let searchQuery = '';
+        let cart = {}; // { id: quantity }
+
+        // Отрисовка вкладок категорий
+        function renderTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = categories.map(cat => {
+                const isActive = cat === activeCategory && !searchQuery;
+                return `
+                    <button 
+                        onclick="selectCategory('${cat}')"
+                        class="whitespace-nowrap px-5 py-2.5 rounded-2xl text-sm font-semibold transition border ${
+                            isActive 
+                            ? 'bg-gradient-to-r from-burgundy-700 to-burgundy-600 text-white border-goldAccent/50 shadow-lg' 
+                            : 'bg-burgundy-950/80 text-rose-200/75 border-burgundy-800 hover:border-burgundy-600 hover:text-white'
+                        }"
+                    >
+                        ${cat}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectCategory(cat) {
+            activeCategory = cat;
+            searchQuery = '';
+            document.getElementById('menu-search').value = '';
+            renderTabs();
+            renderMenu();
+        }
+
+        // Отрисовка карточек блюд
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            const filtered = menuData.filter(item => {
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    return item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+                }
+                return item.category === activeCategory;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-burgundy-950/60 rounded-3xl border border-burgundy-800">
+                        <p class="text-rose-200/70">По запросу «${searchQuery}» ничего не найдено.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => {
+                const qty = cart[item.id] || 0;
+                return `
+                    <div class="bg-burgundy-950/85 hover:bg-burgundy-900/70 border border-burgundy-800/80 hover:border-goldAccent/40 rounded-3xl p-5 flex flex-col justify-between transition group shadow-lg">
+                        <div>
+                            <div class="flex items-start justify-between gap-3">
+                                <h3 class="text-lg font-bold text-white group-hover:text-goldAccent transition leading-snug">
+                                    ${item.name}
+                                </h3>
+                                ${item.isShashlik ? `<span class="shrink-0 text-[10px] uppercase tracking-wider bg-burgundy-800 text-rose-200 px-2.5 py-1 rounded-full border border-rose-500/20">Мангал</span>` : ''}
+                            </div>
+                            <p class="text-xs sm:text-sm text-rose-200/65 mt-2 leading-relaxed">
+                                ${item.desc}
+                            </p>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-burgundy-800/70 flex items-center justify-between">
+                            <span class="text-lg sm:text-xl font-bold text-goldAccent">
+                                ${item.price.toLocaleString('ru-RU')} ₸
+                            </span>
+
+                            ${qty === 0 ? `
+                                <button onclick="updateCart(${item.id}, 1)" class="bg-burgundy-800 hover:bg-burgundy-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-rose-400/20 transition">
+                                    + В заказ
+                                </button>
+                            ` : `
+                                <div class="flex items-center gap-2 bg-noir px-2 py-1 rounded-xl border border-goldAccent/40">
+                                    <button onclick="updateCart(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-burgundy-900 hover:bg-burgundy-800 text-white font-bold">−</button>
+                                    <span class="text-sm font-bold text-goldAccent min-w-[20px] text-center">${qty}</span>
+                                    <button onclick="updateCart(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-burgundy-700 hover:bg-burgundy-600 text-white font-bold">+</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Поиск
+        document.getElementById('menu-search').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTabs();
+            renderMenu();
+        });
+
+        // Управление корзиной
+        function updateCart(id, delta) {
+            const current = cart[id] || 0;
+            const next = current + delta;
+            if (next <= 0) {
+                delete cart[id];
+            } else {
+                cart[id] = next;
+                if (delta > 0) showToast('Блюдо добавлено в заказ');
+            }
+            renderMenu();
+            renderCart();
+        }
+
+        function renderCart() {
+            const itemsContainer = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const mobileBar = document.getElementById('floating-cart-bar');
+            const mobileCount = document.getElementById('mobile-cart-count');
+            const mobileTotal = document.getElementById('mobile-cart-total');
+            const totalEl = document.getElementById('cart-total');
+
+            let totalQty = 0;
+            let totalPrice = 0;
+            let shashlikPortions = 0;
+
+            const entries = Object.entries(cart);
+
+            if (entries.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="text-center text-rose-200/50 py-12 text-sm">
+                        Корзина пока пуста. Выберите шашлыки или салаты из меню!
+                    </div>
+                `;
+                badge.textContent = '0';
+                mobileBar.classList.add('hidden');
+                totalEl.textContent = '0 ₸';
+                updateDeliveryProgress(0);
+                return;
+            }
+
+            itemsContainer.innerHTML = entries.map(([id, qty]) => {
+                const item = menuData.find(m => m.id === Number(id));
+                const sum = item.price * qty;
+                totalQty += qty;
+                totalPrice += sum;
+                if (item.isShashlik) {
+                    shashlikPortions += qty * (item.portions || 1);
+                }
+
+                return `
+                    <div class="bg-noir/70 border border-burgundy-800 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+                        <div>
+                            <div class="text-sm font-semibold text-white">${item.name}</div>
+                            <div class="text-xs text-goldAccent mt-0.5">${item.price.toLocaleString('ru-RU')} ₸ × ${qty} = ${sum.toLocaleString('ru-RU')} ₸</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateCart(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-burgundy-900 text-white font-bold">−</button>
+                            <span class="text-sm font-bold text-white w-5 text-center">${qty}</span>
+                            <button onclick="updateCart(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-burgundy-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            badge.textContent = totalQty;
+            mobileBar.classList.remove('hidden');
+            mobileCount.textContent = totalQty;
+            mobileTotal.textContent = `${totalPrice.toLocaleString('ru-RU')} ₸`;
+            totalEl.textContent = `${totalPrice.toLocaleString('ru-RU')} ₸`;
+
+            updateDeliveryProgress(shashlikPortions);
+        }
+
+        function updateDeliveryProgress(portions) {
+            const statusText = document.getElementById('delivery-status-text');
+            const counterEl = document.getElementById('shashlik-counter');
+            const progressEl = document.getElementById('delivery-progress');
+
+            const pct = Math.min((portions / 5) * 100, 100);
+            progressEl.style.width = `${pct}%`;
+            counterEl.textContent = `${portions} / 5 порций`;
+
+            if (portions >= 5) {
+                statusText.textContent = '🎉 Доставка по Атырау БЕСПЛАТНО!';
+                statusText.classList.add('text-emerald-400');
+            } else {
+                const left = 5 - portions;
+                statusText.textContent = `Ещё ${left} порц. шашлыка до бесплатной доставки`;
+                statusText.classList.remove('text-emerald-400');
+            }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 1800);
+        }
+
+        // Формирование и отправка заказа в WhatsApp
+        function sendOrderToWhatsApp() {
+            const entries = Object.entries(cart);
+            if (entries.length === 0) {
+                showToast('Сначала добавьте блюда из меню');
+                return;
+            }
+
+            const address = document.getElementById('order-address').value.trim() || 'Не указан (уточнить)';
+            let totalPrice = 0;
+            let shashlikPortions = 0;
+            let lines = [];
+
+            entries.forEach(([id, qty], index) => {
+                const item = menuData.find(m => m.id === Number(id));
+                const sum = item.price * qty;
+                totalPrice += sum;
+                if (item.isShashlik) {
+                    shashlikPortions += qty * (item.portions || 1);
+                }
+                lines.push(`${index + 1}. ${item.name} — ${qty} шт. (${sum.toLocaleString('ru-RU')} ₸)`);
+            });
+
+            const deliveryNote = shashlikPortions >= 5 
+                ? 'Бесплатная доставка (от 5 порций шашлыка)' 
+                : `Порций шашлыка: ${shashlikPortions} (доставка по тарифу)`;
+
+            const message = [
+                `Здравствуйте! Заказ с сайта кафе «Берёзка (Ақ Қайың)»:`,
+                ``,
+                ...lines,
+                ``,
+                `Итого: ${totalPrice.toLocaleString('ru-RU')} ₸`,
+                `Статус доставки: ${deliveryNote}`,
+                `Адрес / комментарий: ${address}`
+            ].join('\n');
+
+            const url = `https://wa.me/77756027012?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Инициализация
+        renderTabs();
+        renderMenu();
+    </script>
+</body>
+</html>
